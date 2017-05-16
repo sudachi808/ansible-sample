@@ -29,9 +29,9 @@
         port: 80/tcp
         permanent: yes
         state: enabled
-#     notify: restart firewalld
+      notify: restart firewalld
 
-# handlers:
+  handlers:
     - name: restart firewalld
       service:
         name: firewalld
