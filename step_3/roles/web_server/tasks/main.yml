@@ -1,0 +1,39 @@
+---
+- name: install packages
+  yum:
+    name: "{{ item.name }}"
+  with_items:
+    - name: httpd
+    - name: firewalld
+
+- name: start services
+  service:
+    name: "{{ item.name }}"
+    state: started
+    enabled: yes
+  with_items:
+    - name: httpd
+    - name: firewalld
+
+- name: configure firewalld
+  firewalld:
+    port: 80/tcp
+    permanent: yes
+    state: enabled
+  notify: restart firewalld
+
+- name: create directory
+  file:
+    state: directory
+    path: /var/www/html/test/
+
+- name: copy index.html
+  copy:
+    src: index.html
+    dest: /var/www/html/test/index.html
+
+- name: copy httpd configure file
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf.d/test.conf
+  notify: restart httpd
