@@ -29,7 +29,7 @@
         port: 80/tcp
         permanent: yes
         state: enabled
-      notify: restart httpd
+      notify: restart firewalld
 
     # 追加
     - name: create directory
